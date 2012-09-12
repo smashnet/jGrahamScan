@@ -9,7 +9,7 @@ Build & Run
 To build this tool and make a test run on the given sample_points.txt, do the following:
 
 * ant
-* java -jar jGrahamScan.jar sample_points.txt
+* java -jar export/jGrahamScan.jar sample_points.txt
 
 License
 -------
