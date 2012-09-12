@@ -1,0 +1,57 @@
+<project name="jGrahamScan" default="all" basedir=".">
+	
+	<property name="src" location="./src" />
+	<property name="tmp" location="./temp" />
+	<property name="tmpclasses" location="${tmp}/classes" />
+	<property name="exportdir" location="./export" />
+	<property name="clientpkg" value="graham" />
+	
+	
+	<!-- targets to run-->
+	
+	<!-- default target, will export the client and the java doc -->
+	<target name="all" depends="jar, clean"/>
+	
+	<!-- wipeout target, will delete all unnecessary data as tmp dirs reports and javadoc so we only commit pure source-code into GIT -->
+	<target name="wipeout">
+		<delete dir="${tmp}" />
+		<delete dir="${exportdir}" />
+		<delete dir="./tmp" />
+		<delete file="std.log" />		
+	</target>
+	
+	<!-- explicit targets should not be (but can be) run alone -->
+	
+	<!-- create all missing folders -->
+	<target name="init">
+			<mkdir dir="${tmp}" />
+			<mkdir dir="${tmpclasses}" />
+	</target>
+	
+	
+	<!-- compile the source code -->
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${tmpclasses}" compiler="extJavac" source="1.6" target="1.6" debug="on"
+			includeantruntime="false">
+		</javac>
+	</target>
+	
+	<!-- export compiled code as a jar file -->
+	<target name="jar" depends="compile">
+			<mkdir dir="${exportdir}" />
+			<jar jarfile="${exportdir}/jGrahamScan.jar">
+				<fileset dir="${tmpclasses}">
+					<include name="${clientpkg}/**/*.class" />
+				</fileset>
+				<manifest>
+					<attribute name="Main-Class" value="graham/GrahamScan"/>
+				</manifest>
+			</jar>
+	</target>
+	
+	
+	<!-- Delete temporary folders -->
+	<target name="clean">
+		<delete dir="${tmp}" />
+	</target>
+</project>
